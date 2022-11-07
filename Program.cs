@@ -1,8 +1,9 @@
 ﻿using System;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace PIF1006_tp2
 {
-
     // - Répartition des points -:
     // Program.cs: 2 pts
     // Matrix.cs: 4 pts
@@ -11,22 +12,24 @@ namespace PIF1006_tp2
 
     class Program
     {
+        private static System _system;
+
         static void Main(string[] args)
         {
             //---- exemple --- à ne pas utiliser dans votre remise
 
             // On peut créer une matrice comme ceci:
-            Matrix2D matrixA = new Matrix2D("A", 3, 3);
-            Matrix2D matrixB = new Matrix2D("B", 3, 1);
-
-            // Et on devrait pouvoir construire un système typiquement commec:
-            System system = new System(matrixA, matrixB);
-
-            // Puis résoudre selon différentes méthodes:
-            Matrix2D matrixX;
-            matrixX = system.SolveUsingCramer();
-            matrixX = system.SolveUsingGauss();
-            matrixX = system.SolveUsingInverseMatrix();
+            // Matrix2D matrixA = new Matrix2D("A", 3, 3);
+            // Matrix2D matrixB = new Matrix2D("B", 3, 1);
+            //
+            // // Et on devrait pouvoir construire un système typiquement commec:
+            // System system = new System(matrixA, matrixB);
+            // _system = system;
+            // // Puis résoudre selon différentes méthodes:
+            // Matrix2D matrixX;
+            // matrixX = system.SolveUsingCramer();
+            // matrixX = system.SolveUsingGauss();
+            // matrixX = system.SolveUsingInverseMatrix();
 
 
             // Vous pouvez vous injecter un exemple de système si vous le souhaitez pour vous aider,
@@ -69,6 +72,77 @@ namespace PIF1006_tp2
              * Après chaque option on revient au menu utilisateur, sauf pour quitter bien évidemment.
              * 
              */
+
+            LoadFromFile("./sys_3x3_3x1.json");
+
+            var showMenu = true;
+
+            //On affiche le menu principal aussi longtemps qu'on a pas sélectionné l'option de quitter (4)
+            while (showMenu)
+            {
+                showMenu = MainMenu();
+            }
+        }
+
+        //Affichage du menu principal.
+        private static bool MainMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Choisi une option:");
+            Console.WriteLine("1) Charger un automate");
+            Console.WriteLine("2) Afficher le système");
+            Console.WriteLine("3) Résoudre avec Cramer");
+            Console.WriteLine(
+                "4) Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur");
+            Console.WriteLine("5) Résoudre avec Gauss");
+            Console.WriteLine("6) Quitter l'application");
+            Console.Write("\r\nSélectionner une option: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    Console.WriteLine();
+                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier txt");
+                    LoadFromFile(Console.ReadLine());
+                    return true;
+                case "2":
+                    //TODO: Afficher le système
+                    Console.WriteLine(_system.ToString());
+                    Console.ReadLine();
+                    return true;
+                case "3":
+                    Console.WriteLine();
+                    //TODO: Résoudre avec Cramer
+                    return true;
+                case "4":
+                    Console.WriteLine();
+                    //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
+                    return true;
+                case "5":
+                    Console.WriteLine();
+                    //TODO: Résoudre avec Gauss
+                    return true;
+                case "6":
+                    Console.WriteLine("Bye !");
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        private static void LoadFromFile(string path)
+        {
+            try
+            {
+                var lines = File.ReadAllText(path);
+                var system = JsonConvert.DeserializeObject<System>(lines);
+                _system = system;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                //TODO: Afficher un message d'erreur et charger un system par defaut??
+            }
         }
     }
 }
