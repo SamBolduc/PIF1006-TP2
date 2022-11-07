@@ -67,7 +67,54 @@ namespace PIF1006_tp2
         {
             // À compléter (1 pt)
             // Doit retourner une matrice qui est la comatrice de celle de l'objet
-            return null;
+            if (!IsSquare())
+            {
+                //TODO: Message d'erreur??
+                return null;
+            }
+
+            Matrix2D result = new Matrix2D(new double[this.GetRowCount(), this.GetColCount()], "result");
+            Matrix2D box;
+
+            for (int i = 0; i < this.GetRowCount(); i++)
+            {
+                for (int j = 0; j < this.GetColCount(); j++)
+                {
+                    box = this.SousMatrice(i, j);
+                    if ((i + j) % 2 == 0) 
+                    { 
+                        result.Matrix[i, j] = box.GetDeterminant(box.Matrix, box.GetRowCount(),box.GetColCount()); 
+                    } else 
+                    { 
+                        result.Matrix[i, j] = -1 * box.GetDeterminant(box.Matrix, box.GetRowCount(), box.GetColCount()); 
+                    }
+                }
+            }
+            return result;
+        }
+
+        public Matrix2D SousMatrice(int countRow, int countCol)
+        {
+            Matrix2D matriceCalcul = new Matrix2D(new double[this.GetRowCount() - 1, this.GetColCount() - 1], "sousMatrice");
+            int rowM = 0, columnM = 0;
+            for (int i = 0; i < this.GetRowCount(); i++)
+            {
+                for (int j = 0; j < this.GetColCount(); j++)
+                {
+                    if (i != (countRow) && j != (countCol))
+                    {
+                        matriceCalcul.Matrix[rowM, columnM] = this.Matrix[i, j];
+                        if (columnM < matriceCalcul.GetRowCount() - 1)
+                        {
+                            columnM++;
+                        } else 
+                        {
+                            columnM = 0; rowM++; 
+                        }
+                    }
+                }
+            }
+            return matriceCalcul;
         }
 
         public Matrix2D Inverse()
