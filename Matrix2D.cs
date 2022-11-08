@@ -119,10 +119,39 @@ namespace PIF1006_tp2
 
         public Matrix2D Inverse()
         {
+            Matrix2D result = new Matrix2D(new double[this.GetRowCount(), this.GetColCount()], "result");
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est l'inverse de celle de l'objet;
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
-            return null;
+            if (!IsSquare())
+            {
+                //TODO: Message d'erreur??
+                return null;
+            }
+
+            var det = this.GetDeterminant(this.Matrix, this.GetRowCount(), this.GetColCount());
+
+            if (det == null)
+            {
+                //TODO: Message d'erreur??
+                return null;
+            }
+
+            result = this.Comatrix();
+            result = result.Transpose();
+            result.Division(det);
+            return result;
+        }
+
+        public void Division(double det)
+        {
+            for (var row = 0; row < this.GetRowCount(); row++)
+            {
+                for (var col = 0; col < this.GetColCount(); col++)
+                {
+                    this.Matrix[row, col] = this.Matrix[row, col] * (1 / det);
+                }
+            }
         }
 
         public override string ToString()
