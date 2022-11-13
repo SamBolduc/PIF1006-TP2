@@ -40,7 +40,7 @@
         {
             // À compléter (1 pts)
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
-            return null;
+            return A.Gauss(B.GetRowCount(), B.GetColCount());
         }
 
         public override string ToString()

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace PIF1006_tp2
@@ -142,6 +144,14 @@ namespace PIF1006_tp2
             result.Division(det);
             return result;
         }
+        
+        // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
+        public Matrix2D Gauss(int rowCount, int colCount)
+        {
+            var result = new Matrix2D(new double[rowCount, colCount], "result");
+
+            return result;
+        }
 
         public void Division(double det)
         {
@@ -154,20 +164,6 @@ namespace PIF1006_tp2
             }
         }
 
-        public override string ToString()
-        {
-            // À compléter (0.25 pt)
-            // Doit retourner l'équivalent textuel/visuel d'une matrice.
-            // P.ex.:
-            // A:
-            // | 3 5 7 |
-            // | 6 2 5 |
-            // | 5 4 5 |
-
-            var lines = this.AsPrintable();
-            return string.Join("\n", lines);
-        }
-
         private IEnumerable<string> AsPrintable()
         {
             var ret = new List<string>();
@@ -178,7 +174,7 @@ namespace PIF1006_tp2
                 for (var col = 0; col < GetColCount(); col++)
                 {
                     var val = Matrix[row, col];
-                    line.Append(string.Format("{0:0.##   }", val));
+                    line.Append(string.Format("{0:0.##\t}", val));
                 }
 
                 ret.Add(line.ToString());
@@ -250,6 +246,20 @@ namespace PIF1006_tp2
                     }
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            // À compléter (0.25 pt)
+            // Doit retourner l'équivalent textuel/visuel d'une matrice.
+            // P.ex.:
+            // A:
+            // | 3 5 7 |
+            // | 6 2 5 |
+            // | 5 4 5 |
+
+            var lines = this.AsPrintable();
+            return string.Join("\n", lines);
         }
     }
 }

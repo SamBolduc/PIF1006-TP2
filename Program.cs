@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+// Coéquipiers: Samuel Bolduc, Benôit Légaré et Alexis Michaud
 
 namespace PIF1006_tp2
 {
@@ -105,26 +106,38 @@ namespace PIF1006_tp2
                     Console.WriteLine("Veuillez entrer le chemin vers votre fichier txt");
                     LoadFromFile(Console.ReadLine());
                     return true;
+                
                 case "2":
                     //TODO: Afficher le système
                     Console.WriteLine(_system.ToString());
                     Console.ReadLine();
                     return true;
+                
                 case "3":
                     Console.WriteLine();
                     //TODO: Résoudre avec Cramer
                     return true;
+                
                 case "4":
                     Console.WriteLine();
                     //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
                     return true;
+                
                 case "5":
                     Console.WriteLine();
-                    //TODO: Résoudre avec Gauss
+                    
+                    if(_system.IsValid())
+                        _system.SolveUsingGauss();
+                    else
+                        Console.WriteLine("Impossible de résoudre un système non-valide.");
+                    
+                    Console.ReadLine();
                     return true;
+                
                 case "6":
                     Console.WriteLine("Bye !");
                     return false;
+                
                 default:
                     return true;
             }
