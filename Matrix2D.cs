@@ -95,30 +95,6 @@ namespace PIF1006_tp2
             return result;
         }
 
-        public Matrix2D SousMatrice(int countRow, int countCol)
-        {
-            Matrix2D matriceCalcul = new Matrix2D(new double[this.GetRowCount() - 1, this.GetColCount() - 1], "sousMatrice");
-            int rowM = 0, columnM = 0;
-            for (int i = 0; i < this.GetRowCount(); i++)
-            {
-                for (int j = 0; j < this.GetColCount(); j++)
-                {
-                    if (i != (countRow) && j != (countCol))
-                    {
-                        matriceCalcul.Matrix[rowM, columnM] = this.Matrix[i, j];
-                        if (columnM < matriceCalcul.GetRowCount() - 1)
-                        {
-                            columnM++;
-                        } else 
-                        {
-                            columnM = 0; rowM++; 
-                        }
-                    }
-                }
-            }
-            return matriceCalcul;
-        }
-
         public Matrix2D Inverse()
         {
             Matrix2D result = new Matrix2D(new double[this.GetRowCount(), this.GetColCount()], "result");
@@ -132,6 +108,7 @@ namespace PIF1006_tp2
             }
 
             var det = this.GetDeterminant(this.Matrix, this.GetRowCount(), this.GetColCount());
+            //var det = this.DeterminantM();
 
             if (det == null)
             {
@@ -211,41 +188,45 @@ namespace PIF1006_tp2
         private double GetDeterminant(double[,] matrix, int initialSize, int size)
         {
             double result = 0;
+            Matrix2D matCalcul;
+
 
             if (size == 1) return matrix[0, 0];
-
-            var tmp = new double[initialSize, initialSize];
+            if (size == 2 ) return (matrix[0,0]*matrix[1,1] - matrix[0,1]*matrix[1,0] );
 
             var sign = 1;
             for (var i = 0; i < size; i++)
             {
-                GetCofactor(tmp, 0, i, size);
-                result += GetDeterminant(tmp, initialSize, size - 1) * matrix[0, i] * sign;
+                matCalcul = this.SousMatrice(0,i);
+                result += GetDeterminant(matCalcul.Matrix, initialSize, size - 1) * matrix[0, i] * sign;
                 sign *= -1;
             }
 
             return result;
         }
 
-        private void GetCofactor(double[,] tmp, int p, int q, int matrixSize)
+        public Matrix2D SousMatrice(int countRow, int countCol)
         {
-            var row = 0;
-            var col = 0;
-
-            for (var i = 0; i < matrixSize; i++)
+            Matrix2D matriceCalcul = new Matrix2D(new double[this.GetRowCount() - 1, this.GetColCount() - 1], "sousMatrice");
+            int rowM = 0, columnM = 0;
+            for (int i = 0; i < this.GetRowCount(); i++)
             {
-                for (var j = 0; j < matrixSize; j++)
+                for (int j = 0; j < this.GetColCount(); j++)
                 {
-                    if (i == p || j == q) continue;
-
-                    tmp[row, col++] = Matrix[i, j];
-                    if (col == matrixSize - 1)
+                    if (i != (countRow) && j != (countCol))
                     {
-                        col = 0;
-                        row++;
+                        matriceCalcul.Matrix[rowM, columnM] = this.Matrix[i, j];
+                        if (columnM < matriceCalcul.GetRowCount() - 1)
+                        {
+                            columnM++;
+                        } else 
+                        {
+                            columnM = 0; rowM++; 
+                        }
                     }
                 }
             }
+            return matriceCalcul;
         }
 
         public override string ToString()
