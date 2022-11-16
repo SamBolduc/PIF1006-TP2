@@ -110,6 +110,7 @@ namespace PIF1006_tp2
                 case "2":
                     //TODO: Afficher le système
                     Console.WriteLine(_system.ToString());
+                    Console.WriteLine(_system.SolveUsingCramer());
                     Console.ReadLine();
                     return true;
                 

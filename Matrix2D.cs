@@ -7,8 +7,8 @@ namespace PIF1006_tp2
 {
     public class Matrix2D
     {
-        private double[,] Matrix { get; }
-        private string Name { get; }
+        public double[,] Matrix { get; }
+        public string Name { get; }
 
         public Matrix2D(double[,] matrix, string name)
         {
@@ -185,7 +185,7 @@ namespace PIF1006_tp2
             return this.Matrix.GetLength(1);
         }
 
-        private double GetDeterminant(double[,] matrix, int initialSize, int size)
+        public double GetDeterminant(double[,] matrix, int initialSize, int size)
         {
             double result = 0;
             Matrix2D matCalcul;
@@ -203,6 +203,40 @@ namespace PIF1006_tp2
             }
 
             return result;
+        }
+        
+        public double getDeterminant(double[][] matrix, int initialSize, int size) {
+            double result = 0;
+
+            if (size == 1) return matrix[0][0];
+
+            var tmp = ArrayUtil.CreateJaggedArray<double[][]>(initialSize, initialSize);
+
+            var sign = 1;
+            for (var i = 0; i < size; i++) {
+                getCofactor(matrix, tmp, 0, i, size);
+                result += getDeterminant(tmp, initialSize, size - 1) * matrix[0][i] * sign;
+                sign *= -1;
+            }
+
+            return result;
+        }
+
+        public void getCofactor(double[][] matrix, double[][] tmp, int p, int q, int matrixSize) {
+            int row = 0;
+            int col = 0;
+
+            for (int i = 0; i < matrixSize; i++) {
+                for (int j = 0; j < matrixSize; j++) {
+                    if (i == p || j == q) continue;
+
+                    tmp[row][col++] = matrix[i][j];
+                    if (col == matrixSize - 1) {
+                        col = 0;
+                        row++;
+                    }
+                }
+            }
         }
 
         public Matrix2D SousMatrice(int countRow, int countCol)
