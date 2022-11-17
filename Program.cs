@@ -74,8 +74,10 @@ namespace PIF1006_tp2
              * 
              */
 
-            LoadFromFile("./sys_3x3_3x1.json");
-
+            // Si le fichier est mal formaté, alors le programme quitte et demande à l'utilisateur un fichier bien formatté.
+            if (!LoadFromFile("./sys_3x3_3x1.json")) 
+                return;
+            
             var showMenu = true;
 
             //On affiche le menu principal aussi longtemps qu'on a pas sélectionné l'option de quitter (4)
@@ -148,17 +150,22 @@ namespace PIF1006_tp2
             }
         }
 
-        private static void LoadFromFile(string path)
+        private static bool LoadFromFile(string path)
         {
             try
             {
                 var lines = File.ReadAllText(path);
                 var system = JsonConvert.DeserializeObject<System>(lines);
                 _system = system;
+                return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine($"Erreur lors du chargement du fichier... \"{e.Message}\"");
+                Console.WriteLine("Veuillez fournir un fichier valide et correctement formatté, puis relancer l'application.");
+                Console.WriteLine("Appuyez sur ENTER pour quitter.");
+                Console.ReadLine();
+                return false;
                 //TODO: Afficher un message d'erreur et charger un system par defaut??
             }
         }
