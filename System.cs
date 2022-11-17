@@ -8,7 +8,7 @@ namespace PIF1006_tp2
     public class System
     {
         public Matrix2D A { get; }
-        private Matrix2D B { get; }
+        public Matrix2D B { get; }
 
         public System(Matrix2D a, Matrix2D b)
         {
@@ -136,7 +136,7 @@ namespace PIF1006_tp2
                     { calcs.Matrix[0, calcs.Matrix.GetLength(1) - 1] },
                     { calcs.Matrix[1, calcs.Matrix.GetLength(1) - 1] },
                     { calcs.Matrix[2, calcs.Matrix.GetLength(1) - 1] },
-                }, "result");
+                }, "Result");
         }
 
         public override string ToString()

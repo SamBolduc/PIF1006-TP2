@@ -108,7 +108,12 @@ namespace PIF1006_tp2
                     return true;
                 
                 case "2":
+                    Console.WriteLine("\nSystème entier:");
                     Console.WriteLine(_system.ToString());
+                    Console.WriteLine("-------------------------------------------------------\n");
+                    Console.WriteLine(_system.A.ToString());
+                    Console.WriteLine("-------------------------------------------------------\n");
+                    Console.WriteLine(_system.B.ToString());
                     Console.ReadLine();
                     return true;
                 
