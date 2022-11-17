@@ -125,13 +125,13 @@ namespace PIF1006_tp2
                     return true;
                 
                 case "5":
-                    Console.WriteLine();
-                    
-                    if(_system.IsValid())
-                        _system.SolveUsingGauss();
-                    else
-                        Console.WriteLine("Impossible de résoudre un système non-valide.");
-                    
+                    Matrix2D result;
+                    Console.WriteLine(
+                        (result = _system.SolveUsingGauss()) != null 
+                            ? result 
+                            : "Impossible de résoudre un système non-valide."
+                    );
+
                     Console.ReadLine();
                     return true;
                 

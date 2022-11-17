@@ -72,9 +72,70 @@ namespace PIF1006_tp2
         
         public Matrix2D SolveUsingGauss()
         {
-            // À compléter (1 pts)
-            // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
-            return A.Gauss(B.GetRowCount(), B.GetColCount());
+            if (!IsValid())
+                return null;
+            
+            // La matrice "calcs" contiendra la matrice A ainsi que la matrice B dans la dernière colonne
+            var calcs = new Matrix2D(new double[A.GetRowCount(), A.GetColCount() + B.GetColCount()], "calculations");
+            
+            // Copier les matrices A et B dans la matrice "calcs"
+            for (var row = 0; row < calcs.Matrix.GetLength(0); row++)
+            {
+                for (var col = 0; col < calcs.Matrix.GetLength(1); col++)
+                {
+                    // Pour la dernière colonne qui contient la matrice B
+                    if (col == calcs.Matrix.GetLength(1) - 1)
+                        calcs.Matrix[row, col] = B.Matrix[row, 0];
+                    else
+                        calcs.Matrix[row, col] = A.Matrix[row, col];
+                }
+            }
+            
+            
+            // Opérations élémentaires
+            for (var pivot = 0; pivot < calcs.Matrix.GetLength(0); pivot++)
+            {
+                /* int overUnderPivot -> valeur à partir d'où il faut mettre les valeurs(matrix[row, col]) à 0
+                   Peut être une valeur pour au-dessus ou en-dessous du pivot */
+                void PivotValuesTo0(int overUnderPivot)
+                {
+                    // Calculer le scalaire qui pourra mettre les valeurs en-dessous/au-dessus du pivot à 0
+                    var overUnderPivotTo0 = -calcs.Matrix[overUnderPivot, pivot] / calcs.Matrix[pivot, pivot];
+                
+                    // Mettre 0 à tous les endroits(matrix[row, col]) nécessaires
+                    for (var pivotRow = pivot; pivotRow < calcs.Matrix.GetLength(1); pivotRow++)
+                    {
+                        calcs.Matrix[overUnderPivot, pivotRow] += overUnderPivotTo0 * calcs.Matrix[pivot, pivotRow];
+                    }
+                }
+                
+                // Mettre les valeurs en-dessous du pivot à 0
+                for (var underPivot = pivot + 1; underPivot < calcs.Matrix.GetLength(0); underPivot++)
+                {
+                    PivotValuesTo0(underPivot);
+                }
+
+                // Mettre les valeurs au-dessus du pivot à 0
+                for (var overPivot = pivot - 1; overPivot >= 0; overPivot--)
+                {
+                    PivotValuesTo0(overPivot);
+                }
+                
+                // Calculer le scalaire qui pourra mettre le pivot à 1
+                var pivotTo1 = 1 / calcs.Matrix[pivot, pivot];
+                for (var nextPivotRow = pivot; nextPivotRow < calcs.Matrix.GetLength(1); nextPivotRow++)
+                {
+                    calcs.Matrix[pivot, nextPivotRow] *= pivotTo1;
+                }
+            }
+
+            // Retourne seulement la dernière colonne de la matrice (qui est en soi la matrice B, bref, l'ensemble des valeurs recherchées)
+            return new Matrix2D(
+                new[,] {
+                    { calcs.Matrix[0, calcs.Matrix.GetLength(1) - 1] },
+                    { calcs.Matrix[1, calcs.Matrix.GetLength(1) - 1] },
+                    { calcs.Matrix[2, calcs.Matrix.GetLength(1) - 1] },
+                }, "result");
         }
 
         public override string ToString()

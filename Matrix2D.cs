@@ -121,14 +121,6 @@ namespace PIF1006_tp2
             result.Division(det);
             return result;
         }
-        
-        // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
-        public Matrix2D Gauss(int rowCount, int colCount)
-        {
-            var result = new Matrix2D(new double[rowCount, colCount], "result");
-
-            return result;
-        }
 
         public void Division(double det)
         {
