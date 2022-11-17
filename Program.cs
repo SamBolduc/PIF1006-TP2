@@ -157,6 +157,10 @@ namespace PIF1006_tp2
                 var lines = File.ReadAllText(path);
                 var system = JsonConvert.DeserializeObject<System>(lines);
                 _system = system;
+                
+                Console.WriteLine("Le fichier a correctement été chargé.");
+                Console.WriteLine("Appuyez sur ENTER pour continuer...");
+                Console.ReadLine();
                 return true;
             }
             catch (Exception e)
