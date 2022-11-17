@@ -133,26 +133,6 @@ namespace PIF1006_tp2
             }
         }
 
-        private IEnumerable<string> AsPrintable()
-        {
-            var ret = new List<string> {$"{Name}:"};
-
-            for (var row = 0; row < GetRowCount(); row++)
-            {
-                var line = new StringBuilder();
-                for (var col = 0; col < GetColCount(); col++)
-                {
-                    var val = Matrix[row, col];
-                    line.Append(string.Format("{0:0.##\t}", val));
-                }
-
-                ret.Add(line.ToString());
-                ret.Add("");
-            }
-
-            return ret;
-        }
-
         public bool IsHomogeneous()
         {
             for (var row = 0; row < GetRowCount(); row++)
@@ -197,7 +177,7 @@ namespace PIF1006_tp2
             return result;
         }
         
-        public double getDeterminant(double[][] matrix, int initialSize, int size) {
+        public double GetDeterminant(double[][] matrix, int initialSize, int size) {
             double result = 0;
 
             if (size == 1) return matrix[0][0];
@@ -206,15 +186,15 @@ namespace PIF1006_tp2
 
             var sign = 1;
             for (var i = 0; i < size; i++) {
-                getCofactor(matrix, tmp, 0, i, size);
-                result += getDeterminant(tmp, initialSize, size - 1) * matrix[0][i] * sign;
+                GetCofactor(matrix, tmp, 0, i, size);
+                result += GetDeterminant(tmp, initialSize, size - 1) * matrix[0][i] * sign;
                 sign *= -1;
             }
 
             return result;
         }
 
-        public void getCofactor(double[][] matrix, double[][] tmp, int p, int q, int matrixSize) {
+        public void GetCofactor(double[][] matrix, double[][] tmp, int p, int q, int matrixSize) {
             int row = 0;
             int col = 0;
 
@@ -255,6 +235,26 @@ namespace PIF1006_tp2
             return matriceCalcul;
         }
 
+        private IEnumerable<string> AsPrintable()
+        {
+            var ret = new List<string> {$"{Name}:"};
+
+            for (var row = 0; row < GetRowCount(); row++)
+            {
+                var line = new StringBuilder();
+                for (var col = 0; col < GetColCount(); col++)
+                {
+                    var val = Matrix[row, col];
+                    line.Append(string.Format("{0:0.##\t}", val));
+                }
+
+                ret.Add(line.ToString());
+                ret.Add("");
+            }
+
+            return ret;
+        }
+        
         public override string ToString()
         {
             // À compléter (0.25 pt)

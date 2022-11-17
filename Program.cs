@@ -118,8 +118,9 @@ namespace PIF1006_tp2
                     return true;
                 
                 case "4":
-                    Console.WriteLine();
                     //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
+                    Console.WriteLine(_system.SolveUsingInverseMatrix());
+                    Console.ReadLine();
                     return true;
                 
                 case "5":

@@ -58,7 +58,7 @@ namespace PIF1006_tp2
                     tmp[index][i] = secondMatrix[index][0];
                 }
 
-                res[i, 0] = A.getDeterminant(tmp, 3,3) / detA;
+                res[i, 0] = A.GetDeterminant(tmp, 3,3) / detA;
             }
 
             return new Matrix2D(res, $"Cramer from {B.Name}");;
