@@ -108,15 +108,13 @@ namespace PIF1006_tp2
                     return true;
                 
                 case "2":
-                    //TODO: Afficher le système
                     Console.WriteLine(_system.ToString());
-                    Console.WriteLine(_system.SolveUsingCramer());
                     Console.ReadLine();
                     return true;
                 
                 case "3":
-                    Console.WriteLine();
-                    //TODO: Résoudre avec Cramer
+                    Console.WriteLine(_system.SolveUsingCramer());
+                    Console.ReadLine();
                     return true;
                 
                 case "4":

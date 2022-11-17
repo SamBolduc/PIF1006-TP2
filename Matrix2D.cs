@@ -135,7 +135,7 @@ namespace PIF1006_tp2
 
         private IEnumerable<string> AsPrintable()
         {
-            var ret = new List<string>();
+            var ret = new List<string> {$"{Name}:"};
 
             for (var row = 0; row < GetRowCount(); row++)
             {
@@ -265,7 +265,7 @@ namespace PIF1006_tp2
             // | 6 2 5 |
             // | 5 4 5 |
 
-            var lines = this.AsPrintable();
+            var lines = AsPrintable();
             return string.Join("\n", lines);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PIF1006_tp2
 {
@@ -146,7 +147,25 @@ namespace PIF1006_tp2
             // 3x1 + 5x2 + 7x3 = 9
             // 6x1 + 2x2 + 5x3 = -1
             // 5x1 + 4x2 + 5x3 = 5
-            return A.ToString();
+            var result = new List<string>();
+            
+            // Copier les matrices A et B dans la matrice "calcs"
+            for (var row = 0; row < A.Matrix.GetLength(0); row++)
+            {
+                var line = new StringBuilder();
+                for (var col = 0; col < A.Matrix.GetLength(1) + 1; col++)
+                {
+                    // Pour la dernière colonne qui contient la matrice B
+                    line.Append(col == A.Matrix.GetLength(1)
+                        ? $"=\t{B.Matrix[row, 0]}"  // " = 6"
+                        : $"{A.Matrix[row, col]}x{col + 1}\t{(col == A.Matrix.GetLength(1) - 1 ? "" : "+\t")}" // "1x1 + "
+                    );
+                }
+                result.Add(line.ToString());
+                result.Add("");
+            }
+            
+            return string.Join("\n", result);
         }
     }
 }
