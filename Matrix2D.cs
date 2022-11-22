@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace PIF1006_tp2
@@ -16,7 +14,8 @@ namespace PIF1006_tp2
             Name = name;
         }
 
-        public double[,] getMatrix() { 
+        public double[,] getMatrix()
+        {
             return Matrix;
         }
 
@@ -66,7 +65,7 @@ namespace PIF1006_tp2
                 return 0;
             }
 
-            return GetDeterminant(Matrix, GetRowCount(), GetColCount());
+            return GetDeterminant(Matrix, GetColCount());
         }
 
         public Matrix2D Comatrix()
@@ -79,29 +78,31 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            Matrix2D result = new Matrix2D(new double[this.GetRowCount(), this.GetColCount()], "result");
+            Matrix2D result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
             Matrix2D box;
 
-            for (int i = 0; i < this.GetRowCount(); i++)
+            for (int i = 0; i < GetRowCount(); i++)
             {
-                for (int j = 0; j < this.GetColCount(); j++)
+                for (int j = 0; j < GetColCount(); j++)
                 {
-                    box = this.SousMatrice(i, j);
-                    if ((i + j) % 2 == 0) 
-                    { 
-                        result.Matrix[i, j] = box.GetDeterminant(box.Matrix, box.GetRowCount(),box.GetColCount()); 
-                    } else 
-                    { 
-                        result.Matrix[i, j] = -1 * box.GetDeterminant(box.Matrix, box.GetRowCount(), box.GetColCount()); 
+                    box = SousMatrice(i, j);
+                    if ((i + j) % 2 == 0)
+                    {
+                        result.Matrix[i, j] = box.GetDeterminant(box.Matrix, box.GetColCount());
+                    }
+                    else
+                    {
+                        result.Matrix[i, j] = -1 * box.GetDeterminant(box.Matrix, box.GetColCount());
                     }
                 }
             }
+
             return result;
         }
 
         public Matrix2D Inverse()
         {
-            Matrix2D result = new Matrix2D(new double[this.GetRowCount(), this.GetColCount()], "result");
+            Matrix2D result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est l'inverse de celle de l'objet;
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
@@ -111,7 +112,7 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            var det = this.GetDeterminant(this.Matrix, this.GetRowCount(), this.GetColCount());
+            var det = GetDeterminant(Matrix, GetColCount());
             //var det = this.DeterminantM();
 
             if (det == null)
@@ -120,7 +121,7 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            result = this.Comatrix();
+            result = Comatrix();
             result = result.Transpose();
             result.Division(det);
             return result;
@@ -128,11 +129,11 @@ namespace PIF1006_tp2
 
         public void Division(double det)
         {
-            for (var row = 0; row < this.GetRowCount(); row++)
+            for (var row = 0; row < GetRowCount(); row++)
             {
-                for (var col = 0; col < this.GetColCount(); col++)
+                for (var col = 0; col < GetColCount(); col++)
                 {
-                    this.Matrix[row, col] = this.Matrix[row, col] * (1 / det);
+                    Matrix[row, col] *= (1 / det);
                 }
             }
         }
@@ -143,7 +144,7 @@ namespace PIF1006_tp2
             {
                 for (var col = 0; col < GetColCount(); col++)
                 {
-                    var val = this.Matrix[row, col];
+                    var val = Matrix[row, col];
                     if (val != 0) return false;
                 }
             }
@@ -158,30 +159,31 @@ namespace PIF1006_tp2
 
         public int GetColCount()
         {
-            return this.Matrix.GetLength(1);
+            return Matrix.GetLength(1);
         }
 
-        public double GetDeterminant(double[,] matrix, int initialSize, int size)
+        public double GetDeterminant(double[,] matrix, int size)
         {
             double result = 0;
             Matrix2D matCalcul;
 
 
             if (size == 1) return matrix[0, 0];
-            if (size == 2 ) return (matrix[0,0]*matrix[1,1] - matrix[0,1]*matrix[1,0] );
+            if (size == 2) return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
 
             var sign = 1;
             for (var i = 0; i < size; i++)
             {
-                matCalcul = this.SousMatrice(0,i);
-                result += GetDeterminant(matCalcul.Matrix, initialSize, size - 1) * matrix[0, i] * sign;
+                matCalcul = SousMatrice(0, i);
+                result += GetDeterminant(matCalcul.Matrix, size - 1) * matrix[0, i] * sign;
                 sign *= -1;
             }
 
             return result;
         }
-        
-        public double GetDeterminant(double[][] matrix, int initialSize, int size) {
+
+        public double GetDeterminant(double[][] matrix, int initialSize, int size)
+        {
             double result = 0;
 
             if (size == 1) return matrix[0][0];
@@ -189,7 +191,8 @@ namespace PIF1006_tp2
             var tmp = ArrayUtil.CreateJaggedArray<double[][]>(initialSize, initialSize);
 
             var sign = 1;
-            for (var i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++)
+            {
                 GetCofactor(matrix, tmp, 0, i, size);
                 result += GetDeterminant(tmp, initialSize, size - 1) * matrix[0][i] * sign;
                 sign *= -1;
@@ -198,16 +201,20 @@ namespace PIF1006_tp2
             return result;
         }
 
-        public void GetCofactor(double[][] matrix, double[][] tmp, int p, int q, int matrixSize) {
-            int row = 0;
-            int col = 0;
+        public void GetCofactor(double[][] matrix, double[][] tmp, int p, int q, int matrixSize)
+        {
+            var row = 0;
+            var col = 0;
 
-            for (int i = 0; i < matrixSize; i++) {
-                for (int j = 0; j < matrixSize; j++) {
+            for (var i = 0; i < matrixSize; i++)
+            {
+                for (var j = 0; j < matrixSize; j++)
+                {
                     if (i == p || j == q) continue;
 
                     tmp[row][col++] = matrix[i][j];
-                    if (col == matrixSize - 1) {
+                    if (col == matrixSize - 1)
+                    {
                         col = 0;
                         row++;
                     }
@@ -217,31 +224,34 @@ namespace PIF1006_tp2
 
         public Matrix2D SousMatrice(int countRow, int countCol)
         {
-            Matrix2D matriceCalcul = new Matrix2D(new double[this.GetRowCount() - 1, this.GetColCount() - 1], "sousMatrice");
+            Matrix2D matriceCalcul = new Matrix2D(new double[GetRowCount() - 1, GetColCount() - 1], "sousMatrice");
             int rowM = 0, columnM = 0;
-            for (int i = 0; i < this.GetRowCount(); i++)
+            for (int i = 0; i < GetRowCount(); i++)
             {
-                for (int j = 0; j < this.GetColCount(); j++)
+                for (int j = 0; j < GetColCount(); j++)
                 {
                     if (i != (countRow) && j != (countCol))
                     {
-                        matriceCalcul.Matrix[rowM, columnM] = this.Matrix[i, j];
+                        matriceCalcul.Matrix[rowM, columnM] = Matrix[i, j];
                         if (columnM < matriceCalcul.GetRowCount() - 1)
                         {
                             columnM++;
-                        } else 
+                        }
+                        else
                         {
-                            columnM = 0; rowM++; 
+                            columnM = 0;
+                            rowM++;
                         }
                     }
                 }
             }
+
             return matriceCalcul;
         }
 
         private IEnumerable<string> AsPrintable()
         {
-            var ret = new List<string> {$"{Name}:"};
+            var ret = new List<string> { $"{Name}:" };
 
             for (var row = 0; row < GetRowCount(); row++)
             {
@@ -258,7 +268,7 @@ namespace PIF1006_tp2
 
             return ret;
         }
-        
+
         public override string ToString()
         {
             // À compléter (0.25 pt)

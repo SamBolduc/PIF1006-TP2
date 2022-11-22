@@ -12,7 +12,7 @@
             var columnsLastIndex = twoDimensionalArray.GetUpperBound(1);
             var numberOfColumns = columnsLastIndex + 1;
 
-            T[][] jaggedArray = new T[numberOfRows][];
+            var jaggedArray = new T[numberOfRows][];
             for (var i = rowsFirstIndex; i <= rowsLastIndex; i++)
             {
                 jaggedArray[i] = new T[numberOfColumns];

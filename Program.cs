@@ -105,7 +105,7 @@ namespace PIF1006_tp2
             {
                 case "1":
                     Console.WriteLine();
-                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier txt");
+                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier json (sys_3x3_3x1.json par défaut)");
                     LoadFromFile(Console.ReadLine());
                     return true;
                 
@@ -137,7 +137,7 @@ namespace PIF1006_tp2
                     return true;
                 
                 case "5":
-                    Matrix2D result;
+                    // Matrix2D result;
                     Console.WriteLine(
                         (result = _system.SolveUsingGauss()) != null 
                             ? result 

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PIF1006_tp2
 {
-    public class ArrayUtil
+    public static class ArrayUtil
     {
         public static T CreateJaggedArray<T>(params int[] lengths)
         {
@@ -22,6 +23,20 @@ namespace PIF1006_tp2
             }
 
             return array;
+        }
+
+        public static T[] GetColumn<T>(T[,] matrix, int columnNumber)
+        {
+            return Enumerable.Range(0, matrix.GetLength(0))
+                .Select(x => matrix[x, columnNumber])
+                .ToArray();
+        }
+
+        public static T[] GetRow<T>(T[,] matrix, int rowNumber)
+        {
+            return Enumerable.Range(0, matrix.GetLength(1))
+                .Select(x => matrix[rowNumber, x])
+                .ToArray();
         }
     }
 }
