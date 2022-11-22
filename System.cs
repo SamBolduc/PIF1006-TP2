@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace PIF1006_tp2
@@ -47,20 +46,23 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            var res = new double[B.GetRowCount(), B.GetColCount()];
-            for (var i = 0; i < B.GetRowCount(); i++)
+            var res = new double[3, 1];
+            for (var i = 0; i < 3; i++)
             {
-                var tmp = ArrayUtil.CreateJaggedArray<double[][]>(A.GetRowCount(), A.GetColCount());
-                
-                var firstMatrix = A.Matrix.ToJaggedArray();
-                for (var index = 0; index < firstMatrix.Length; index++)
+                var tmp = new Matrix2D(new double[3, 3], "tmp");
+                for (var index = 0; index < A.GetColCount(); index++)
                 {
-                    Array.Copy(firstMatrix[index], 0, tmp[index], 0, firstMatrix[0].Length);
-                    tmp[index][i] = B.Matrix[index, 0];
+                    for (var j = 0; j < A.GetColCount(); j++)
+                    {
+                        tmp.Matrix[index, j] = A.Matrix[index, j];
+                    }
+
+                    tmp.Matrix[index, i] = B.Matrix[index, 0];
                 }
 
-                res[i, 0] = A.GetDeterminant(tmp, A.GetRowCount(), A.GetColCount()) / detA;
+                res[i, 0] = tmp.Determinant() / detA;
             }
+
 
             return new Matrix2D(res, $"Cramer from {B.Name}");
         }
