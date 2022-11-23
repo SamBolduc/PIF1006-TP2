@@ -75,41 +75,44 @@ namespace PIF1006_tp2
                 return null;
 
             Matrix2D result = A.Inverse();
-            int resultCol = result.GetColCount();
-            int resultRow = result.GetRowCount();
-            int bCol = B.GetColCount();
-            int bRow = B.GetRowCount();
-            double[,] resultM = result.getMatrix();
-            double[,] bM = B.getMatrix();
+
+            if (result != null) { 
+                int resultCol = result.GetColCount();
+                int resultRow = result.GetRowCount();
+                int bCol = B.GetColCount();
+                int bRow = B.GetRowCount();
+                double[,] resultM = result.getMatrix();
+                double[,] bM = B.getMatrix();
 
 
-            if (resultCol == bRow)
-            {
-                double total = 0;
-                double[,] nouvelMat = new double[resultRow, bCol];
-
-                for (int i = 0; i < resultRow; i++)
+                if (resultCol == bRow)
                 {
-                    for (int y = 0; y < bCol; y++)
-                    {
-                        total = 0;
-                        for (int z = 0; z < resultCol; z++)
-                        {
-                            total += resultM[i, z] * bM[z, y];
-                        }
+                    double total = 0;
+                    double[,] nouvelMat = new double[resultRow, bCol];
 
-                        nouvelMat[i, y] = total;
+                    for (int i = 0; i < resultRow; i++)
+                    {
+                        for (int y = 0; y < bCol; y++)
+                        {
+                            total = 0;
+                            for (int z = 0; z < resultCol; z++)
+                            {
+                                total += resultM[i, z] * bM[z, y];
+                            }
+
+                            nouvelMat[i, y] = total;
+                        }
                     }
+
+                    return new Matrix2D(nouvelMat, "resultat");
+                }
+                else
+                {
+                    return null;
+                }
                 }
 
-                return new Matrix2D(nouvelMat, "resultat");
-            }
-            else
-            {
                 return null;
-            }
-
-            return null;
         }
 
         public Matrix2D SolveUsingGauss()

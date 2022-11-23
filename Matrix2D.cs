@@ -30,7 +30,7 @@ namespace PIF1006_tp2
 
             if (!IsSquare())
             {
-                //TODO: Message d'erreur??
+                Console.WriteLine("La matrice n'est pas carré");
                 return null;
             }
 
@@ -60,7 +60,6 @@ namespace PIF1006_tp2
             if (!IsSquare())
             {
                 throw new ArgumentException("La matrice doit être carrée.");
-                //TODO: Error??
             }
 
             // À compléter (2 pts)
@@ -75,7 +74,7 @@ namespace PIF1006_tp2
             // Doit retourner une matrice qui est la comatrice de celle de l'objet
             if (!IsSquare())
             {
-                //TODO: Message d'erreur??
+                Console.WriteLine("La matrice n'est pas carré");
                 return null;
             }
 
@@ -109,22 +108,26 @@ namespace PIF1006_tp2
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
             if (!IsSquare())
             {
-                //TODO: Message d'erreur??
+                Console.WriteLine("La matrice n'est pas carré");
                 return null;
             }
 
             var det = Determinant();
-            //var det = this.DeterminantM();
+
 
             if (det == null)
             {
-                //TODO: Message d'erreur??
+                Console.WriteLine("Le determinant de la matrice est null");
                 return null;
             }
 
             result = Comatrix();
-            result = result.Transpose();
-            result.Division(det);
+            if (result != null) { 
+                result = result.Transpose();
+                if (result != null) { 
+                    result.Division(det);
+                }
+            }
             return result;
         }
 
