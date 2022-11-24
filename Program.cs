@@ -176,7 +176,6 @@ namespace PIF1006_tp2
                 Console.WriteLine("Appuyez sur ENTER pour quitter.");
                 Console.ReadLine();
                 return false;
-                //TODO: Afficher un message d'erreur et charger un system par defaut??
             }
         }
     }

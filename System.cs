@@ -17,7 +17,7 @@ namespace PIF1006_tp2
             B = b;
         }
 
-        public bool IsValid()
+        private bool IsValid()
         {
             // À compléter (0.25 pt)
             // Doit vérifier si la matrix A est carrée et si B est une matrice avec le même nb
@@ -34,14 +34,9 @@ namespace PIF1006_tp2
             var detA = A.Determinant();
             if (detA == 0)
             {
-                if (B.IsHomogeneous())
-                {
-                    Console.WriteLine("IL Y A UNE INFINITÉ DE SOLUTIONS");
-                }
-                else
-                {
-                    Console.WriteLine("IL Y A SOIT UNE INFINITÉ DE SOLUTIONS, SOIT AUCUNE SOLUTION");
-                }
+                Console.WriteLine(B.IsHomogeneous()
+                    ? "IL Y A UNE INFINITÉ DE SOLUTIONS"
+                    : "IL Y A SOIT UNE INFINITÉ DE SOLUTIONS, SOIT AUCUNE SOLUTION");
 
                 return null;
             }
@@ -64,7 +59,7 @@ namespace PIF1006_tp2
             }
 
 
-            return new Matrix2D(res, $"Cramer from {B.Name}");
+            return new Matrix2D(res, $"Cramer de {B.Name}");
         }
 
         public Matrix2D SolveUsingInverseMatrix()
@@ -74,45 +69,38 @@ namespace PIF1006_tp2
             if (!IsValid())
                 return null;
 
-            Matrix2D result = A.Inverse();
+            var result = A.Inverse();
 
-            if (result != null) { 
-                int resultCol = result.GetColCount();
-                int resultRow = result.GetRowCount();
-                int bCol = B.GetColCount();
-                int bRow = B.GetRowCount();
-                double[,] resultM = result.getMatrix();
-                double[,] bM = B.getMatrix();
+            if (result == null) 
+                return null;
+            
+            var resultCol = result.GetColCount();
+            var resultRow = result.GetRowCount();
+            var bCol = B.GetColCount();
+            var bRow = B.GetRowCount();
+            var resultM = result.GetMatrix();
+            var bM = B.GetMatrix();
 
 
-                if (resultCol == bRow)
+            if (resultCol != bRow) 
+                return null;
+            
+            var newMatrix = new double[resultRow, bCol];
+            for (var i = 0; i < resultRow; i++)
+            {
+                for (var y = 0; y < bCol; y++)
                 {
                     double total = 0;
-                    double[,] nouvelMat = new double[resultRow, bCol];
-
-                    for (int i = 0; i < resultRow; i++)
+                    for (var z = 0; z < resultCol; z++)
                     {
-                        for (int y = 0; y < bCol; y++)
-                        {
-                            total = 0;
-                            for (int z = 0; z < resultCol; z++)
-                            {
-                                total += resultM[i, z] * bM[z, y];
-                            }
-
-                            nouvelMat[i, y] = total;
-                        }
+                        total += resultM[i, z] * bM[z, y];
                     }
 
-                    return new Matrix2D(nouvelMat, "resultat");
+                    newMatrix[i, y] = total;
                 }
-                else
-                {
-                    return null;
-                }
-                }
+            }
 
-                return null;
+            return new Matrix2D(newMatrix, $"Matrice inverse de {B.Name}");
         }
 
         public Matrix2D SolveUsingGauss()
@@ -181,7 +169,7 @@ namespace PIF1006_tp2
                     { calcs.Matrix[0, calcs.Matrix.GetLength(1) - 1] },
                     { calcs.Matrix[1, calcs.Matrix.GetLength(1) - 1] },
                     { calcs.Matrix[2, calcs.Matrix.GetLength(1) - 1] },
-                }, "Result");
+                }, $"Gauss de {B.Name}");
         }
 
         public override string ToString()
@@ -194,21 +182,29 @@ namespace PIF1006_tp2
             // 5x1 + 4x2 + 5x3 = 5
             var result = new List<string>();
 
-            // Copier les matrices A et B dans la matrice "calcs"
-            for (var row = 0; row < A.Matrix.GetLength(0); row++)
+            try
             {
-                var line = new StringBuilder();
-                for (var col = 0; col < A.Matrix.GetLength(1) + 1; col++)
+                for (var row = 0; row < A.Matrix.GetLength(0); row++)
                 {
-                    // Pour la dernière colonne qui contient la matrice B
-                    line.Append(col == A.Matrix.GetLength(1)
-                            ? $"=\t{B.Matrix[row, 0]}" // " = 6"
-                            : $"{A.Matrix[row, col]}x{col + 1}\t{(col == A.Matrix.GetLength(1) - 1 ? "" : "+\t")}" // "1x1 + "
-                    );
-                }
+                    var line = new StringBuilder();
+                    for (var col = 0; col < A.Matrix.GetLength(1) + 1; col++)
+                    {
+                        // Pour la dernière colonne qui contient la matrice B
+                        line.Append(col == A.Matrix.GetLength(1)
+                                ? $"=\t{B.Matrix[row, 0]}" // " = 6"
+                                : $"{A.Matrix[row, col]}x{col + 1}\t{(col == A.Matrix.GetLength(1) - 1 ? "" : "+\t")}" // "1x1 + "
+                        );
+                    }
 
-                result.Add(line.ToString());
-                result.Add("");
+                    result.Add(line.ToString());
+                    result.Add("");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Impossible d'imprimer le système entier sous forme 'ax + by + ... = Z' car les conditions de validité ne sont pas respectées...");
+                Console.WriteLine("(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
+                return null;
             }
 
             return string.Join("\n", result);

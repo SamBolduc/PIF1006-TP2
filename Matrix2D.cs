@@ -15,12 +15,12 @@ namespace PIF1006_tp2
             Name = name;
         }
 
-        public double[,] getMatrix()
+        public double[,] GetMatrix()
         {
             return Matrix;
         }
 
-        public Matrix2D Transpose()
+        private Matrix2D Transpose()
         {
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est la transposée de celle de l'objet
@@ -68,7 +68,7 @@ namespace PIF1006_tp2
             return MatrixUtil.GetDeterminant(this, GetRowCount(), GetColCount());
         }
 
-        public Matrix2D Comatrix()
+        private Matrix2D Comatrix()
         {
             // À compléter (1 pt)
             // Doit retourner une matrice qui est la comatrice de celle de l'objet
@@ -78,8 +78,8 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            Matrix2D result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
-            Matrix2D box = new Matrix2D(new double[GetRowCount() - 1, GetColCount() - 1], "b");
+            var result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
+            var box = new Matrix2D(new double[GetRowCount() - 1, GetColCount() - 1], "b");
 
             for (var i = 0; i < GetRowCount(); i++)
             {
@@ -102,7 +102,7 @@ namespace PIF1006_tp2
 
         public Matrix2D Inverse()
         {
-            Matrix2D result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
+            var result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est l'inverse de celle de l'objet;
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
@@ -131,7 +131,7 @@ namespace PIF1006_tp2
             return result;
         }
 
-        public void Division(double det)
+        private void Division(double det)
         {
             for (var row = 0; row < GetRowCount(); row++)
             {
