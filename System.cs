@@ -66,11 +66,13 @@ namespace PIF1006_tp2
         {
             // À compléter (0.25 pt)
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
+
             if (!IsValid())
                 return null;
 
             var result = A.Inverse();
 
+            //Vérification que la matrice inverse de la matrice A n'est pas null
             if (result == null) 
                 return null;
             
@@ -81,10 +83,12 @@ namespace PIF1006_tp2
             var resultM = result.GetMatrix();
             var bM = B.GetMatrix();
 
-
+            //Vérification que la matrice inverse à le même nombre de colone que le nombre de ligne de la matrice B 
             if (resultCol != bRow) 
                 return null;
             
+            //On multiplie les éléments des colones de la matrice A avec les éléments des lignes de la matrice B
+            //Ensuite nous les additionnons pour former une nouvelle matrice
             var newMatrix = new double[resultRow, bCol];
             for (var i = 0; i < resultRow; i++)
             {

@@ -28,12 +28,6 @@ namespace PIF1006_tp2
             var rowCount = GetRowCount();
             var colsCount = GetColCount();
 
-            if (!IsSquare())
-            {
-                Console.WriteLine("La matrice n'est pas carré");
-                return null;
-            }
-
             var result = new double[rowCount, colsCount];
             for (var i = 0; i < rowCount; i++)
             {
@@ -102,7 +96,6 @@ namespace PIF1006_tp2
 
         public Matrix2D Inverse()
         {
-            var result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est l'inverse de celle de l'objet;
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
@@ -121,12 +114,11 @@ namespace PIF1006_tp2
                 return null;
             }
 
-            result = Comatrix();
-            if (result != null) { 
+            Matrix2D result = Comatrix();
+            if (result != null)
+            {
                 result = result.Transpose();
-                if (result != null) { 
-                    result.Division(det);
-                }
+                result.Division(det);
             }
             return result;
         }
