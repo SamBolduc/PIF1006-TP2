@@ -66,19 +66,25 @@ namespace PIF1006_tp2
         {
             // À compléter (1 pt)
             // Doit retourner une matrice qui est la comatrice de celle de l'objet
+
+            //vérification de si la matrice est carrée
             if (!IsSquare())
             {
-                Console.WriteLine("La matrice n'est pas carré");
-                return null;
+                throw new ArgumentException("La matrice doit être carrée.");
             }
 
+
+            //Matrice résultante de la comatrice
             var result = new Matrix2D(new double[GetRowCount(), GetColCount()], "result");
+
+            //Matrice qui va permettre de contenir les sous matrices
             var box = new Matrix2D(new double[GetRowCount() - 1, GetColCount() - 1], "b");
 
             for (var i = 0; i < GetRowCount(); i++)
             {
                 for (var j = 0; j < GetColCount(); j++)
                 {
+                    //Retourne une sous matrice de la matrice principale pour calculer son déterminant
                     box = MatrixUtil.GetSubMatrix(this, box, i, j, GetColCount());
                     if ((i + j) % 2 == 0)
                     {
@@ -99,20 +105,14 @@ namespace PIF1006_tp2
             // À compléter (0.25 pt)
             // Doit retourner une matrice qui est l'inverse de celle de l'objet;
             // Si le déterminant est nul ou la matrice non carrée, on retourne null.
+
+            //vérification de si la matrice est carrée
             if (!IsSquare())
             {
-                Console.WriteLine("La matrice n'est pas carré");
-                return null;
+                throw new ArgumentException("La matrice doit être carrée.");
             }
 
             var det = Determinant();
-
-
-            if (det == null)
-            {
-                Console.WriteLine("Le determinant de la matrice est null");
-                return null;
-            }
 
             Matrix2D result = Comatrix();
             if (result != null)
@@ -123,6 +123,7 @@ namespace PIF1006_tp2
             return result;
         }
 
+        //Divise chaque élément de la matrice par le paramètre.
         private void Division(double det)
         {
             for (var row = 0; row < GetRowCount(); row++)

@@ -127,11 +127,18 @@ namespace PIF1006_tp2
                 case "4":
                     //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
                     Matrix2D result;
-                    Console.WriteLine(
+                    try
+                    {
+                        Console.WriteLine(
                         (result = _system.SolveUsingInverseMatrix()) != null 
                             ? result 
                             : "Impossible de résoudre un système non-valide."
                     );
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.Write("Error info:" + ex.Message);
+                    }
 
                     Console.ReadLine();
                     return true;
