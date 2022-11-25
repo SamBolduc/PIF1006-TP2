@@ -96,7 +96,7 @@ namespace PIF1006_tp2
             Console.WriteLine("2) Afficher le système");
             Console.WriteLine("3) Résoudre avec Cramer");
             Console.WriteLine(
-                "4) Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur");
+                "4) Résoudre avec la méthode de la matrice inverse");
             Console.WriteLine("5) Résoudre avec Gauss");
             Console.WriteLine("6) Quitter l'application");
             Console.Write("\r\nSélectionner une option: ");
