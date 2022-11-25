@@ -114,6 +114,11 @@ namespace PIF1006_tp2
 
             var det = Determinant();
 
+            if (det == 0)
+            {
+                throw new ArgumentException("Le determinant de la matrice est 0.");
+            }
+
             Matrix2D result = Comatrix();
             if (result != null)
             {
