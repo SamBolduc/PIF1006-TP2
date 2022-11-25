@@ -101,66 +101,56 @@ namespace PIF1006_tp2
             Console.WriteLine("6) Quitter l'application");
             Console.Write("\r\nSélectionner une option: ");
 
-            switch (Console.ReadLine())
+            try
             {
-                case "1":
-                    Console.WriteLine();
-                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier json (sys_3x3_3x1.json par défaut)");
-                    LoadFromFile(Console.ReadLine());
-                    return true;
-                
-                case "2":
-                    Console.WriteLine("\nSystème entier:");
-                    Console.WriteLine(_system.ToString());
-                    Console.WriteLine("-------------------------------------------------------\n");
-                    Console.WriteLine(_system.A.ToString());
-                    Console.WriteLine("-------------------------------------------------------\n");
-                    Console.WriteLine(_system.B.ToString());
-                    Console.ReadLine();
-                    return true;
-                
-                case "3":
-                    Console.WriteLine(_system.SolveUsingCramer());
-                    Console.ReadLine();
-                    return true;
-                
-                case "4":
-                    //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
-                    Matrix2D result;
-                    try
-                    {
-                        Console.WriteLine(
-                        (result = _system.SolveUsingInverseMatrix()) != null 
-                            ? result 
-                            : "Impossible de résoudre un système non-valide."
-                    );
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.Write("Error info:" + ex.Message);
-                    }
-
-                    Console.ReadLine();
-                    return true;
-                
-                case "5":
-                    // Matrix2D result;
-                    Console.WriteLine(
-                        (result = _system.SolveUsingGauss()) != null 
-                            ? result 
-                            : "Impossible de résoudre un système non-valide."
-                    );
-
-                    Console.ReadLine();
-                    return true;
-                
-                case "6":
-                    Console.WriteLine("Bye !");
-                    return false;
-                
-                default:
-                    return true;
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        Console.WriteLine();
+                        Console.WriteLine("Veuillez entrer le chemin vers votre fichier json (sys_3x3_3x1.json par défaut)");
+                        LoadFromFile(Console.ReadLine());
+                        return true;
+                    
+                    case "2":
+                        Console.WriteLine("\nSystème entier:");
+                        Console.WriteLine(_system.ToString());
+                        Console.WriteLine("-------------------------------------------------------\n");
+                        Console.WriteLine(_system.A.ToString());
+                        Console.WriteLine("-------------------------------------------------------\n");
+                        Console.WriteLine(_system.B.ToString());
+                        Console.ReadLine();
+                        return true;
+                    
+                    case "3":
+                        Console.WriteLine($"Cramer de {_system.SolveUsingCramer()}");
+                        Console.ReadLine();
+                        return true;
+                    
+                    case "4":
+                        //TODO: Résoudre avec la méthode de la matrice inverse : si dét. nul, on recoit nul et on doit afficher un message à l'utilisateur
+                        Console.WriteLine($"Matrice inverse de {_system.SolveUsingInverseMatrix()}");
+                        Console.ReadLine();
+                        return true;
+                    
+                    case "5":
+                        Console.WriteLine($"Gauss de {_system.SolveUsingGauss()}");
+                        Console.ReadLine();
+                        return true;
+                    
+                    case "6":
+                        Console.WriteLine("Bye !");
+                        return false;
+                    
+                    default:
+                        return true;
+                }
             }
+            catch(Exception ex)
+            {
+                Console.Write($"ERREUR...\n{ex.Message}");
+                Console.ReadLine();
+            }
+            return true;
         }
 
         private static bool LoadFromFile(string path)

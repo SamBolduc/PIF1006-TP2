@@ -30,6 +30,10 @@ namespace PIF1006_tp2
         {
             // À compléter (1 pt)
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus
+            
+            if (!IsValid())
+                throw new ArgumentException(
+                    "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
 
             var detA = A.Determinant();
             if (detA == 0)
@@ -38,7 +42,8 @@ namespace PIF1006_tp2
                     ? "IL Y A UNE INFINITÉ DE SOLUTIONS"
                     : "IL Y A SOIT UNE INFINITÉ DE SOLUTIONS, SOIT AUCUNE SOLUTION");
 
-                return null;
+                throw new ArgumentException(
+                    "Voir message ci-haut.");
             }
 
             var res = new double[3, 1];
@@ -59,7 +64,7 @@ namespace PIF1006_tp2
             }
 
 
-            return new Matrix2D(res, $"Cramer de {B.Name}");
+            return new Matrix2D(res, A.Name);
         }
 
         public Matrix2D SolveUsingInverseMatrix()
@@ -68,8 +73,9 @@ namespace PIF1006_tp2
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus 
 
             if (!IsValid())
-                return null;
-
+                throw new ArgumentException(
+                    "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
+                    
             var result = A.Inverse();
 
             //Vérification que la matrice inverse de la matrice A n'est pas null
@@ -104,13 +110,14 @@ namespace PIF1006_tp2
                 }
             }
 
-            return new Matrix2D(newMatrix, $"Matrice inverse de {B.Name}");
+            return new Matrix2D(newMatrix, A.Name);
         }
 
         public Matrix2D SolveUsingGauss()
         {
             if (!IsValid())
-                return null;
+                throw new ArgumentException(
+                    "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
 
             // La matrice "calcs" contiendra la matrice A ainsi que la matrice B dans la dernière colonne
             var calcs = new Matrix2D(new double[A.GetRowCount(), A.GetColCount() + B.GetColCount()], "calculations");
@@ -167,13 +174,11 @@ namespace PIF1006_tp2
             }
 
             // Retourne seulement la dernière colonne de la matrice (qui est en soi la matrice B, bref, l'ensemble des valeurs recherchées)
-            return new Matrix2D(
-                new[,]
-                {
-                    { calcs.Matrix[0, calcs.Matrix.GetLength(1) - 1] },
-                    { calcs.Matrix[1, calcs.Matrix.GetLength(1) - 1] },
-                    { calcs.Matrix[2, calcs.Matrix.GetLength(1) - 1] },
-                }, $"Gauss de {B.Name}");
+            var result = new double[calcs.Matrix.GetLength(0), 1];
+            for (var i = 0; i < calcs.Matrix.GetLength(0); i++)
+                result[i, 0] = calcs.Matrix[i, calcs.Matrix.GetLength(1) - 1];
+            
+            return new Matrix2D(result, A.Name);
         }
 
         public override string ToString()
