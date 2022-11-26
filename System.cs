@@ -31,11 +31,14 @@ namespace PIF1006_tp2
             // À compléter (1 pt)
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus
 
+            //Validation que la matrice respecte bien les critères
             if (!IsValid())
                 throw new ArgumentException(
                     "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
 
             var detA = A.Determinant();
+
+            //Si le determinant est 0, on ne peut pas utiliser cramer.
             if (detA == 0)
             {
                 Console.WriteLine(B.IsHomogeneous()
@@ -46,10 +49,13 @@ namespace PIF1006_tp2
                     "Voir message ci-haut.");
             }
 
-            var res = new double[B.GetRowCount(), B.GetColCount()];
+
+            var res = new double[B.GetRowCount(), B.GetColCount()]; //Array des resultats
+
             for (var i = 0; i < B.GetRowCount(); i++)
             {
-                var tmp = new Matrix2D(new double[A.GetRowCount(), A.GetColCount()], "tmp");
+                var tmp = new Matrix2D(new double[A.GetRowCount(), A.GetColCount()],
+                    "tmp"); //Matrice temporaire pour les calculs.
                 for (var index = 0; index < A.GetRowCount(); index++)
                 {
                     for (var j = 0; j < A.GetColCount(); j++)
@@ -60,7 +66,7 @@ namespace PIF1006_tp2
                     tmp.Matrix[index, i] = B.Matrix[index, 0];
                 }
 
-                res[i, 0] = tmp.Determinant() / detA;
+                res[i, 0] = tmp.Determinant() / detA; //On stock le resultat du detX / detA
             }
 
 
