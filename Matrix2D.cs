@@ -15,11 +15,6 @@ namespace PIF1006_tp2
             Name = name;
         }
 
-        public double[,] GetMatrix()
-        {
-            return Matrix;
-        }
-
         private Matrix2D Transpose()
         {
             // À compléter (0.25 pt)

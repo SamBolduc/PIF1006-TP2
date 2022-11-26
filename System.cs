@@ -30,7 +30,7 @@ namespace PIF1006_tp2
         {
             // À compléter (1 pt)
             // Doit retourner une matrice X de même dimension que B avec les valeurs des inconnus
-            
+
             if (!IsValid())
                 throw new ArgumentException(
                     "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
@@ -46,11 +46,11 @@ namespace PIF1006_tp2
                     "Voir message ci-haut.");
             }
 
-            var res = new double[3, 1];
-            for (var i = 0; i < 3; i++)
+            var res = new double[B.GetRowCount(), B.GetColCount()];
+            for (var i = 0; i < B.GetRowCount(); i++)
             {
-                var tmp = new Matrix2D(new double[3, 3], "tmp");
-                for (var index = 0; index < A.GetColCount(); index++)
+                var tmp = new Matrix2D(new double[A.GetRowCount(), A.GetColCount()], "tmp");
+                for (var index = 0; index < A.GetRowCount(); index++)
                 {
                     for (var j = 0; j < A.GetColCount(); j++)
                     {
@@ -75,24 +75,24 @@ namespace PIF1006_tp2
             if (!IsValid())
                 throw new ArgumentException(
                     "Conditions de validité non respectées...\n(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
-                    
+
             var result = A.Inverse();
 
             //Vérification que la matrice inverse de la matrice A n'est pas null
-            if (result == null) 
+            if (result == null)
                 return null;
-            
+
             var resultCol = result.GetColCount();
             var resultRow = result.GetRowCount();
             var bCol = B.GetColCount();
             var bRow = B.GetRowCount();
-            var resultM = result.GetMatrix();
-            var bM = B.GetMatrix();
+            var resultM = result.Matrix;
+            var bM = B.Matrix;
 
             //Vérification que la matrice inverse à le même nombre de colone que le nombre de ligne de la matrice B 
-            if (resultCol != bRow) 
+            if (resultCol != bRow)
                 return null;
-            
+
             //On multiplie les éléments des colones de la matrice A avec les éléments des lignes de la matrice B
             //Ensuite nous les additionnons pour former une nouvelle matrice
             var newMatrix = new double[resultRow, bCol];
@@ -177,7 +177,7 @@ namespace PIF1006_tp2
             var result = new double[calcs.Matrix.GetLength(0), 1];
             for (var i = 0; i < calcs.Matrix.GetLength(0); i++)
                 result[i, 0] = calcs.Matrix[i, calcs.Matrix.GetLength(1) - 1];
-            
+
             return new Matrix2D(result, A.Name);
         }
 
@@ -211,8 +211,10 @@ namespace PIF1006_tp2
             }
             catch (Exception)
             {
-                Console.WriteLine("Impossible d'imprimer le système entier sous forme 'ax + by + ... = Z' car les conditions de validité ne sont pas respectées...");
-                Console.WriteLine("(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
+                Console.WriteLine(
+                    "Impossible d'imprimer le système entier sous forme 'ax + by + ... = Z' car les conditions de validité ne sont pas respectées...");
+                Console.WriteLine(
+                    "(A.IsSquare() && B.GetColCount() == 1 && B.GetRowCount() == A.GetRowCount()) == false");
                 return null;
             }
 
