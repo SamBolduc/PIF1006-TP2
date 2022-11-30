@@ -145,6 +145,9 @@ namespace PIF1006_tp2
             // Opérations élémentaires
             for (var pivot = 0; pivot < calcs.Matrix.GetLength(0); pivot++)
             {
+                if (calcs.Matrix[pivot, pivot] == 0)
+                    throw new ArithmeticException("Veuillez ordonner les rangées de la matrice de manière à ne pas induire un pivot à 0.");
+                        
                 /* int overUnderPivot -> valeur à partir d'où il faut mettre les valeurs(matrix[row, col]) à 0
                    Peut être une valeur pour au-dessus ou en-dessous du pivot */
                 void PivotValuesTo0(int overUnderPivot)
